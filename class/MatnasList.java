@@ -1,5 +1,5 @@
 
-public class MatnasList extends List{
+public class MatnasList extends List<Matnas>{
     
     public void addMat(Matnas mat){
         super.list.add(mat);

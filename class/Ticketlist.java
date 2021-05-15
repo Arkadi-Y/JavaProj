@@ -1,4 +1,4 @@
-public class Ticketlist extends List{
+public class Ticketlist extends List<Ticket>{
     public void addTick(Ticket Tick){
         super.list.add(Tick);
     }
