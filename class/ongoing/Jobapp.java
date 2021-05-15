@@ -19,4 +19,7 @@ public class Jobapp {
     void setCV(String CV) {
         this.CV = CV;
     }
+    public String toString() {
+        return this.jobID + " " + this.CV;
+    }
 }
