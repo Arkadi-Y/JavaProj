@@ -12,4 +12,17 @@ public class List<T> {
    public void setList(ArrayList<T> list) {
        this.list = list;
    }
+   public void add(T item) {
+       this.list.add(item);
+   }
+   public void remove(T item) {
+       this.list.remove(item);
+   }
+   public String toString(){
+       String res="";
+       for(T item : list){
+           res+=item.toString()+"\n";
+       }
+       return res;
+   }
 }

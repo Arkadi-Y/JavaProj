@@ -30,4 +30,7 @@ public class Employee extends Person{
         this.role = role;
     }
 
+    public String toString(){
+        return super.toString() + " Employee{ address=" + this.address + " role=" + this.role+"}";
+    }
 }
