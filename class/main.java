@@ -1,8 +1,8 @@
 public class main {
     public static void main(String[] args){
-        EmployeeList a = new EmployeeList();
-        MatnasList b = new MatnasList();
-        Ticketlist c = new Ticketlist();
+        List<Employee> a = new List<Employee>();
+        List<Matnas> b = new List<Matnas>();
+        List<Ticket> c = new List<Ticket>();
         a.add(new Employee("a", "a","a", "a","a"));
         a.add(new Employee("a", "a","a", "a","a"));
         a.add(new Employee("a", "a","a", "a","a"));
