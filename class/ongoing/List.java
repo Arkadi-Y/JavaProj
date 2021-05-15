@@ -1,7 +1,5 @@
 package ongoing;
 import java.util.ArrayList;
-
-import java.util.ArrayList;
 public class List<T> {
    protected ArrayList<T> list;
    public List(){
