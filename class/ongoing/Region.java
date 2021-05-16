@@ -1,12 +1,12 @@
 package ongoing;
-import java.util.*;
+
 public class Region {
-    private Employee Diractor,Vice,Secretery;   
- 
-    public Region(Employee Diractor,Employee Vice,Employee Secretery){
+    private Employee Diractor, Vice, Secretery;
+
+    public Region(Employee Diractor, Employee Vice, Employee Secretery) {
         this.setDiractor(Diractor);
-        this.setVice(Vice); 
-        this.setSecretery(Secretery); 
+        this.setVice(Vice);
+        this.setSecretery(Secretery);
     }
 
     public Employee getSecretery() {
@@ -26,10 +26,10 @@ public class Region {
     }
 
     public Employee getDiractor() {
-		return Diractor;
-	}
-    
-	public void setDiractor(Employee diractor) {
-		this.Diractor = diractor;
-	}
+        return Diractor;
+    }
+
+    public void setDiractor(Employee diractor) {
+        this.Diractor = diractor;
+    }
 }
