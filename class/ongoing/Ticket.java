@@ -1,21 +1,42 @@
 package ongoing;
-public class Ticket extends Matnas{
+public class Ticket extends Person{
+    private static int count=0;
     private String status,Description;
-    public Ticket(String status,String Description,int id,Employee Diractor,Employee Vice,Employee Secretery){
-        super(id, Diractor, Vice, Secretery);
+    private int ticketNum;
+    public Ticket(int ticketNum,String status,String Description,Person person){
+        super(person.getName(),person.getPhone(),person.getMail());
+        this.ticketNum=ticketNum;
         this.status = status;
         this.Description = Description;
+        count=ticketNum+1;
     }
-    String getStatus(){
+    public Ticket(String status,String Description,Person person){
+        super(person.getName(),person.getPhone(),person.getMail());
+        this.ticketNum=count;
+        this.status = status;
+        this.Description = Description;
+        count++;
+    }
+    public int getTicketNum(){return this.ticketNum;}
+    public String getStatus(){
         return this.status;
     }
-    String getDescription(){
+    public String getDescription(){
         return this.Description;
     }
-    void setStatus(String status){
+    public void setStatus(String status){
         this.status = status;
     }
-    void setDescription(String description){
+    public void setDescription(String description){
         this.Description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "status='" + status + '\'' +
+                ", Description='" + Description + '\'' +
+                ", ticketNum=" + ticketNum +
+                '}'+" user name :"+getName();
     }
 }
