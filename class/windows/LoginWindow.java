@@ -1,4 +1,7 @@
+package windows;
+
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,31 +13,33 @@ public class LoginWindow implements ActionListener {
     private JTextField userNameText;
     private JPasswordField passwordText;
     private JButton loginBTN;
-    public LoginWindow(){
+
+    public LoginWindow() {
         setUP();
     }
-    public void setUP(){
+
+    public void setUP() {
         frame = new JFrame();
-        frame.setSize(350,200);
+        frame.setSize(350, 200);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
         panel.setLayout(null);
 
         userNameLable = new JLabel("User  name");
-        userNameLable.setBounds(10,20,80,25);
+        userNameLable.setBounds(10, 20, 80, 25);
 
         passwordLable = new JLabel("Password   ");
-        passwordLable.setBounds(10,50,80,25);
+        passwordLable.setBounds(10, 50, 80, 25);
 
         userNameText = new JTextField(45);
-        userNameText.setBounds(100,20,165,25);
+        userNameText.setBounds(100, 20, 165, 25);
 
         passwordText = new JPasswordField(45);
-        passwordText.setBounds(100,50,165,25);
+        passwordText.setBounds(100, 50, 165, 25);
 
         loginBTN = new JButton("Login");
-        loginBTN.setBounds(10,80,80,25);
+        loginBTN.setBounds(10, 80, 80, 25);
 
         panel.add(userNameLable);
         panel.add(userNameText);
@@ -48,20 +53,18 @@ public class LoginWindow implements ActionListener {
         frame.setVisible(true);
 
     }
-    public void addActions(){
+
+    public void addActions() {
         loginBTN.addActionListener(this::actionPerformed);
     }
 
-    public void validate(String user,String password){
-        myJDBC db = new myJDBC();
-        if (db.validateLogin(user,password)){
-            frame.dispose();
-            EmployeeWindow employeeWindow = new EmployeeWindow();
-
-        }
-        else
-            System.out.println("Bad");
-
+    public void validate(String user, String password) {
+        /*
+         * myJDBC db = new myJDBC(); if (db.validateLogin(user, password)) {
+         * frame.dispose(); EmployeeWindow employeeWindow = new EmployeeWindow();
+         * 
+         * } else System.out.println("Bad");
+         */
     }
 
     @Override
@@ -70,6 +73,7 @@ public class LoginWindow implements ActionListener {
         String userName = userNameText.getText();
         char[] passwordArray = passwordText.getPassword();
         String password = new String(passwordArray);
-        validate(userName,password);
+        validate(userName, password);
     }
+
 }

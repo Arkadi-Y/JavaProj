@@ -1,4 +1,4 @@
-package decrapted;
+package deprecated;
 
 import ongoing.Employee;
 import ongoing.List;

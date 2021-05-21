@@ -3,11 +3,11 @@ package Server;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
+
 import java.util.Properties;
 
 public class getPropertyValues {
-    String[]  result=new String[3];
+    String[] result = new String[3];
     InputStream inputStream;
 
     public String[] getPropValues() throws IOException {
@@ -25,7 +25,7 @@ public class getPropertyValues {
             result[0] = prop.getProperty("sqlUrl");
             result[1] = prop.getProperty("user");
             result[2] = prop.getProperty("password");
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println("Exception: " + e);
@@ -36,4 +36,3 @@ public class getPropertyValues {
         return result;
     }
 }
-
