@@ -43,7 +43,8 @@ public class List<T> {
                 return item;
             if (item instanceof Ticket && id == ((Ticket) item).getTicketNum())
                 return item;
-
+            if (item instanceof Matnas && id == ((Matnas) item).getID())
+                return item;
         }
         return null;
     }

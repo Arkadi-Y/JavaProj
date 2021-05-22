@@ -32,4 +32,8 @@ public class Region {
     public void setDiractor(Employee diractor) {
         this.Diractor = diractor;
     }
+
+    public String toString() {
+        return "Employee {" + this.Diractor.toString() + "" + this.Secretery.toString() + this.Vice.toString() + "}";
+    }
 }
