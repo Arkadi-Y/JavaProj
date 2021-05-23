@@ -51,17 +51,7 @@ public class TicketWindow {
         setUP();
         SubmitBtn.setEnabled(false);
         UpdateBtn.addActionListener(e -> {
-            try {
-                myJDBC sql = new myJDBC();
-                sql.updateTicketStatus(StatusText.getText(),ticket.getTicketNum());
-                frame.dispose();
-                EmployeeWindow window =new EmployeeWindow();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-
+            updateTicket(ticket);
         });
     }
     //main setup for frame
@@ -144,6 +134,19 @@ public class TicketWindow {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    public void updateTicket(Ticket ticket){
+        try {
+            myJDBC sql = new myJDBC();
+            sql.updateTicketStatus(StatusText.getText(),ticket.getTicketNum());
+            frame.dispose();
+            EmployeeWindow window =new EmployeeWindow();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 

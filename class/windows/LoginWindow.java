@@ -1,9 +1,13 @@
 package windows;
 
+import Server.myJDBC;
+
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginWindow implements ActionListener {
     private JFrame frame;
@@ -58,13 +62,14 @@ public class LoginWindow implements ActionListener {
         loginBTN.addActionListener(this::actionPerformed);
     }
 
-    public void validate(String user, String password) {
-        /*
-         * myJDBC db = new myJDBC(); if (db.validateLogin(user, password)) {
-         * frame.dispose(); EmployeeWindow employeeWindow = new EmployeeWindow();
-         * 
-         * } else System.out.println("Bad");
-         */
+    public void validate(String user, String password) throws IOException, SQLException {
+
+          myJDBC db = new myJDBC(); if (db.validateLogin(user, password)) {
+          frame.dispose();
+          new EmployeeWindow();
+
+          } else System.out.println("Bad");
+
     }
 
     @Override
@@ -73,7 +78,13 @@ public class LoginWindow implements ActionListener {
         String userName = userNameText.getText();
         char[] passwordArray = passwordText.getPassword();
         String password = new String(passwordArray);
-        validate(userName, password);
+        try {
+            validate(userName, password);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }
