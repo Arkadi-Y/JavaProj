@@ -2,8 +2,6 @@ package Server;
 
 import java.io.*;
 import java.sql.*;
-import java.util.Properties;
-import java.util.stream.Collectors;
 import Interfaces.*;
 
 import ongoing.*;

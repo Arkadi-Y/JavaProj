@@ -2,7 +2,7 @@ package ongoing;
 
 import Interfaces.*;
 
-public class Matnas extends Region {
+public class Matnas extends Region implements MatnasInt {
     private final int id;
 
     public Matnas(int id, Employee Diractor, Employee Vice, Employee Secretery) {

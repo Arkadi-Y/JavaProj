@@ -1,31 +1,10 @@
 package Interfaces;
 
-import ongoing.*;
-
-import java.io.IOException;
 import java.sql.SQLException;
 
-interface TicketInt {
+import ongoing.*;
 
-    public int getTicketNum();
-
-    public String getStatus();
-
-    public String getDescription();
-
-    public void setStatus(String status);
-
-    public void setDescription(String description);
-
-    @Override
-    public String toString();
-}
-
-interface getPropertyValuesInt {
-    public String[] getPropValues() throws IOException;
-}
-
-interface myJDBCInt {
+public interface myJDBCInt {
     // connection method
     public void connect() throws SQLException;
 
