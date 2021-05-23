@@ -1,4 +1,10 @@
 package ongoing;
+
+import Server.myJDBC;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class Person{
     private static int count = 0;
     private int id;
@@ -15,10 +21,26 @@ public class Person{
         count = id+1;
     }
     public Person(String name, String phone, String mail){
-        this.id = count;
+
         this.name=name;
         this.phone=phone;
         this.mail=mail;
+        try{
+            myJDBC sql = new myJDBC();
+            int sqlID = sql.findPerson(name,phone);
+            if (sqlID >=0){
+                this.id = sqlID;
+            }
+            else {
+                this.id = count;
+                sql.newPerson(id,name,phone,mail);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            this.id = count;
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.id = count;}
         count++;
     }
 
