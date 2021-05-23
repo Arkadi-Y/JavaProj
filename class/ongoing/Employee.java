@@ -1,6 +1,8 @@
 package ongoing;
 
-public class Employee extends Person {
+import Interfaces.*;
+
+public class Employee extends Person implements EmployeeInt {
     private String address;
     private String role;
 

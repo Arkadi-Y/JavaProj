@@ -1,6 +1,8 @@
 package ongoing;
 
-public class Region {
+import Interfaces.*;
+
+public class Region implements RegionInt {
     private Employee Diractor, Vice, Secretery;
 
     public Region(Employee Diractor, Employee Vice, Employee Secretery) {

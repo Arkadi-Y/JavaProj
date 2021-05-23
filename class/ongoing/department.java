@@ -1,32 +1,39 @@
 package ongoing;
 
-public class department {
+import Interfaces.*;
+
+public class department implements departmentInt {
     private String type;
     private Employee vice;
     private Employee Secretery;
+
     public department(String type, Employee vice, Employee Secretery) {
         this.type = type;
         this.vice = vice;
         this.Secretery = Secretery;
     }
-    String getType() { 
-        return this.type; 
+
+    public String getType() {
+        return this.type;
     }
-    
-    Employee getVice(){
+
+    public Employee getVice() {
         return this.vice;
     }
-    Employee getSecretery(){
+
+    public Employee getSecretery() {
         return this.Secretery;
     }
-    void setType(String type){
+
+    public void setType(String type) {
         this.type = type;
     }
-    void setVice(Employee vice)
-    {
+
+    public void setVice(Employee vice) {
         this.vice = vice;
     }
-    void setSecretery(Employee Secretery){
+
+    public void setSecretery(Employee Secretery) {
         this.Secretery = Secretery;
     }
 }

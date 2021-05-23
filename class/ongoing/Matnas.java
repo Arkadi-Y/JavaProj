@@ -1,5 +1,7 @@
 package ongoing;
 
+import Interfaces.*;
+
 public class Matnas extends Region {
     private final int id;
 

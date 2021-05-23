@@ -3,10 +3,10 @@ package Server;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
+import Interfaces.*;
 import java.util.Properties;
 
-public class getPropertyValues {
+public class getPropertyValues implements getPropertyValuesInt {
     String[] result = new String[3];
     InputStream inputStream;
 

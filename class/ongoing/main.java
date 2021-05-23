@@ -5,7 +5,7 @@ import windows.*;
 public class main {
     public static void main(String[] args) {
         try {
-            new EmployeeWindow();
+            new MainWindow();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
