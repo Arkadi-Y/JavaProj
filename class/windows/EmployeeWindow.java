@@ -109,6 +109,6 @@ public class EmployeeWindow {
     //create new ticket
     public void newTicket(){
         frame.dispose();
-        TicketWindow ticketWindow = new TicketWindow();
+        TicketWindow ticketWindow = new TicketWindow(1);
     }
 }

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 //ticket window will show ticket content or lets you create a new one
 public class TicketWindow {
+    private int logedIn;
     private JFrame frame;
     private JTextField StatusText;
     private JTextField DescriptionText;
@@ -34,7 +35,7 @@ public class TicketWindow {
     private JButton UpdateBtn = new JButton("Update");
 
 // constructor for new ticket
-    public TicketWindow(){
+    public TicketWindow(int logedIn){
         frame = new JFrame();
         initTextFields();
         setUP();
@@ -43,6 +44,7 @@ public class TicketWindow {
         SubmitBtn.addActionListener(e -> {
            addTicket();
         });
+        this.logedIn = logedIn;
     }
     //constructor for existing ticket
     public TicketWindow(Ticket ticket){
@@ -53,6 +55,7 @@ public class TicketWindow {
         UpdateBtn.addActionListener(e -> {
             updateTicket(ticket);
         });
+        this.logedIn=1;
     }
     //main setup for frame
     public void setUP(){
@@ -65,7 +68,10 @@ public class TicketWindow {
         {@Override
             public void windowClosing(WindowEvent e){
             try {
-                EmployeeWindow window =new EmployeeWindow();
+                if (logedIn==1)
+                    new EmployeeWindow();
+                else
+                    new MainWindow();
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (SQLException ex) {
@@ -106,7 +112,7 @@ public class TicketWindow {
         StatusText=new JTextField(T.getStatus());
         DescriptionText=new JTextField(T.getDescription());
         DescriptionText.setEditable(false);
-        ticketNumText=new JTextField(T.getTicketNum());
+        ticketNumText=new JTextField((Integer.toString(T.getTicketNum())));
         ticketNumText.setEditable(false);
         UserNameText=new JTextField(T.getName());
         UserNameText.setEditable(false);
@@ -140,7 +146,7 @@ public class TicketWindow {
             myJDBC sql = new myJDBC();
             sql.updateTicketStatus(StatusText.getText(),ticket.getTicketNum());
             frame.dispose();
-            EmployeeWindow window =new EmployeeWindow();
+            new EmployeeWindow();
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (SQLException ex) {
