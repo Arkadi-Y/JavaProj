@@ -1,9 +1,7 @@
 package windows;
 
 import Server.myJDBC;
-
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -64,10 +62,10 @@ public class LoginWindow implements ActionListener {
 
     public void validate(String user, String password) throws IOException, SQLException {
 
-          myJDBC db = new myJDBC(); if (db.validateLogin(user, password)) {
-          frame.dispose();
-          new EmployeeWindow();
-
+          myJDBC db = new myJDBC();
+          if (db.validateLogin(user, password)) {
+              frame.dispose();
+              new EmployeeWindow();
           } else System.out.println("Bad");
 
     }

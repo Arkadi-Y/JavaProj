@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -44,7 +43,23 @@ public class EmployeeWindow {
         setTable();
         frame.add(scrollPane,BorderLayout.CENTER);
         newBtn.setPreferredSize(new Dimension(50,20));
-        newBtn.addActionListener(e -> newTicket());
+        newBtn.addActionListener(e -> {
+            try {
+                newTicket();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
         panel.add(newBtn,BorderLayout.SOUTH);
         frame.add(panel,BorderLayout.SOUTH);
         frame.setLocationRelativeTo(null);
@@ -104,14 +119,25 @@ public class EmployeeWindow {
                     else {
                     frame.dispose();
                     //close frame and open ticket window with ticket
-                    new TicketWindow(ticketList.findByID(ticketNum));}
+                        try {
+                            new TicketWindow(ticketList.findByID(ticketNum));
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                 }
             }
         });
     }
     //create new ticket
-    public void newTicket(){
+    public void newTicket() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        if (ticketList.size>=30)
+            System.out.println("to many");
+        else {
         frame.dispose();
-        TicketWindow ticketWindow = new TicketWindow(1);
+        new TicketWindow(1);
+    }
     }
 }

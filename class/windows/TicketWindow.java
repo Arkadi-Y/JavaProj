@@ -4,12 +4,9 @@ import Server.myJDBC;
 import ongoing.List;
 import ongoing.Person;
 import ongoing.Ticket;
-import windows.EmployeeWindow;
-
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -19,7 +16,8 @@ import java.sql.SQLException;
 public class TicketWindow {
     private int logedIn;
     private JFrame frame;
-    private JTextField StatusText;
+    private JComboBox StatusText;
+    private String[] statusOptions = {"New","Waiting","Complete"};
     private JTextField DescriptionText;
     private JTextField ticketNumText;
     private JTextField UserNameText;
@@ -34,8 +32,12 @@ public class TicketWindow {
     private JButton SubmitBtn = new JButton("Submit");
     private JButton UpdateBtn = new JButton("Update");
 
+    private myJDBC jdbc = new myJDBC();
+    private List<Person> personList = jdbc.loadPeopleToList();
+    private List<Ticket> ticketList = jdbc.loadTicketsToList(personList);
+
 // constructor for new ticket
-    public TicketWindow(int logedIn){
+    public TicketWindow(int logedIn) throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         frame = new JFrame();
         initTextFields();
         setUP();
@@ -44,10 +46,16 @@ public class TicketWindow {
         SubmitBtn.addActionListener(e -> {
            addTicket();
         });
+        if (this.ticketList.size>=30) {
+            SubmitBtn.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "There are too many active tickets, please wait", "alert", JOptionPane.ERROR_MESSAGE);
+            frame.dispose();
+            new MainWindow();
+        }
         this.logedIn = logedIn;
     }
     //constructor for existing ticket
-    public TicketWindow(Ticket ticket){
+    public TicketWindow(Ticket ticket) throws IOException, SQLException {
         frame = new JFrame();
         initTicket(ticket);
         setUP();
@@ -78,6 +86,14 @@ public class TicketWindow {
                 ex.printStackTrace();
             } catch (SQLException ex) {
                 ex.printStackTrace();
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
             }
         }});
         //makes frame go center
@@ -103,7 +119,10 @@ public class TicketWindow {
     }
     //empty text for new ticket
     public void initTextFields(){
-        StatusText=new JTextField();
+        StatusText=new JComboBox(statusOptions);
+        StatusText.setSelectedIndex(0);
+        StatusText.setEditable(false);
+        StatusText.setEnabled(false);
         DescriptionText=new JTextField();
         ticketNumText=new JTextField();
         UserNameText=new JTextField();
@@ -112,7 +131,13 @@ public class TicketWindow {
     }
     //fill existing ticket
     public void initTicket(Ticket T){
-        StatusText=new JTextField(T.getStatus());
+        int index =0;
+        StatusText= new JComboBox(statusOptions);
+        for (int i =0;i<statusOptions.length;i++){
+            if(statusOptions[i].equals(T.getStatus()))
+                index = i;
+        }
+        StatusText.setSelectedIndex(index);
         DescriptionText=new JTextField(T.getDescription());
         DescriptionText.setEditable(false);
         ticketNumText=new JTextField((Integer.toString(T.getTicketNum())));
@@ -124,38 +149,63 @@ public class TicketWindow {
         UserMailText=new JTextField(T.getMail());
         UserMailText.setEditable(false);
     }
-    public void addTicket(){
+    public void addTicket() {
         String description = DescriptionText.getText();
-        String status = StatusText.getText();
+        String status = StatusText.getSelectedItem().toString();
         String name = UserNameText.getText();
         String phone = UserPhoneText.getText();
         String mail = UserMailText.getText();
-        Person p = new Person(name,phone,mail);
-        Ticket t = new Ticket(status,description,p);
-        try {
-            myJDBC sql = new myJDBC();
-            sql.newPerson(p);
-            sql.insertTicket(t);
-            frame.dispose();
-            new EmployeeWindow();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        if (validateInput(description,status,name,phone,mail)) {
+            Person p = new Person(name, phone, mail);
+            Ticket t = new Ticket(status, description, p);
+            try {
+                jdbc.newPerson(p);
+                jdbc.insertTicket(t);
+                if (logedIn > 0)
+                    new EmployeeWindow();
+                else
+                    new MainWindow();
+                frame.dispose();
+            } catch (IOException ex) {
+                new ErrorWindow(ex);
+            } catch (SQLException | ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
         }
+
     }
     public void updateTicket(Ticket ticket){
         try {
-            myJDBC sql = new myJDBC();
-            sql.updateTicketStatus(StatusText.getText(),ticket.getTicketNum());
+            jdbc.updateTicketStatus(StatusText.getSelectedItem().toString(),ticket.getTicketNum());
             frame.dispose();
             new EmployeeWindow();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            new ErrorWindow(ex);
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            new ErrorWindow(ex);
         }
 
+    }
+    public boolean validateInput( String description,String status,String name,String phone,String mail ) {
+        boolean flag = true;
+        if (description.equals("") || description == null) {
+            flag = false;
+            this.DescriptionText.setBorder(new LineBorder(Color.RED, 2));
+        }
+        if (status.equals("") || status == null){
+            flag = false;
+        this.StatusText.setBorder(new LineBorder(Color.RED, 2));}
+        if (name.equals("") || name == null){
+            flag = false;
+        this.UserNameText.setBorder(new LineBorder(Color.RED, 2));}
+        if (phone.equals("") || phone == null){
+            flag = false;
+        this.UserPhoneText.setBorder(new LineBorder(Color.RED, 2));}
+        if (mail.equals("") || mail == null){
+            flag = false;
+        this.UserMailText.setBorder(new LineBorder(Color.RED, 2));
+    }
+            return flag;
     }
 
 

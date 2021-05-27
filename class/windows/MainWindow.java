@@ -1,7 +1,10 @@
 package windows;
 
+import Server.myJDBC;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainWindow {
     private JFrame frame;
@@ -10,14 +13,38 @@ public class MainWindow {
     private JButton newTicket;
     private menuBar menuBar;
 
-    public MainWindow(){
+    public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        //look for connection errors at startup
+        try {
+            myJDBC sql = new myJDBC();
+        } catch (IOException e) {
+            new ErrorWindow(e);
+        } catch (SQLException e) {
+            new ErrorWindow(e);
+        }
         frame = new JFrame();
         panel = new JPanel();
         menuBar = new menuBar(0);
         login = new JButton("login");
         login.addActionListener(e -> loginAction());
         newTicket = new JButton("Enter help request");
-        newTicket.addActionListener(e -> newTicketAction());
+        newTicket.addActionListener(e -> {
+            try {
+                newTicketAction();
+            } catch (IOException ex) {
+                new ErrorWindow(ex);
+            } catch (SQLException ex) {
+                new ErrorWindow(ex);
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
         frame.setBounds(400,200,500,400);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         panel.setLayout(new GridLayout(2,1,10,5));
@@ -33,7 +60,7 @@ public class MainWindow {
         frame.dispose();
         new LoginWindow();
     }
-    public void newTicketAction(){
+    public void newTicketAction() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         frame.dispose();
         new TicketWindow(0);
     }

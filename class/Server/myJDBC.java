@@ -2,37 +2,28 @@ package Server;
 
 import java.io.*;
 import java.sql.*;
-import java.util.Properties;
-import java.util.stream.Collectors;
-
 import ongoing.*;
 //main connection class to database
 public class myJDBC {
 private String sqlUrl;
 private String user;
 private String password;
+private Connection connection;
 // constructor calls getProperty class to set up connectrion.
-    //connection will be created at every method
     public myJDBC() throws IOException, SQLException {
+        System.out.println("*");
         getPropertyValues getClass = new getPropertyValues();
         String[]values = getClass.getPropValues();
-        sqlUrl = values[0];
-        user = values [1];
-        password = values[2];
+        this.sqlUrl = values[0];
+        this.user = values [1];
+        this.password = values[2];
+        this.connection = DriverManager.getConnection(sqlUrl,user,password);
     }
-    //connection method
-    public void connect() throws SQLException {
-       try {
-           Connection connection = DriverManager.getConnection(sqlUrl,user,password);
-       }catch (Exception e){
-           e.printStackTrace();
-       }
-    }
+
     //un-used;
     public void getTickets(int ID) throws SQLException {
         try{
-        Connection connection = DriverManager.getConnection(sqlUrl,user,password);
-        Statement statement = connection.createStatement();
+        Statement statement =  this.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from tickets where idPerson="+ID);
         while (resultSet.next()) {
             System.out.println(resultSet.getString("description"));
@@ -46,8 +37,7 @@ private String password;
     public String getQuery(String column, String table, String where,String ID){
         String output = "";
         try{
-            Connection connection = DriverManager.getConnection(sqlUrl,user,password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select "+column+" from "+table+" where "+where+"="+ID);
             while (resultSet.next()) {
 
@@ -61,8 +51,7 @@ private String password;
     //checks if  user name and password are in the database to validate login.
     public boolean validateLogin(String username,String userpassword){
         try{
-            Connection connection = DriverManager.getConnection(sqlUrl,user,password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from employeelogin WHERE UserName ='"+username+"' AND Password ='"+userpassword+"'");
             while (resultSet.next())
                 return true;
@@ -76,7 +65,6 @@ private String password;
     //return id by name and phone
     public int findPerson(String name, String phone){
         try{
-            Connection connection = DriverManager.getConnection(sqlUrl,user,password);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from person WHERE name ='"+name+"' AND phone ='"+phone+"'");
             while (resultSet.next()){
@@ -93,7 +81,6 @@ private String password;
     public List<Ticket> loadTicketsToList(List<Person>personList){
         List<Ticket>list=new List<>();
         try{
-            Connection connection = DriverManager.getConnection(sqlUrl,user,password);
             Statement statement = connection.createStatement();
             //get all tickets
             ResultSet resultSet = statement.executeQuery("select * from tickets");
@@ -124,8 +111,7 @@ private String password;
     public List<Person> loadPeopleToList(){
         List<Person> people = new List<>();
         try{
-            Connection connection = DriverManager.getConnection(sqlUrl,user,password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             //get all people table
             ResultSet resultSet = statement.executeQuery("select * from person");
             while (resultSet.next()){
@@ -147,8 +133,7 @@ private String password;
     //as name suggests
     public void updateTicketStatus(String status, int ID) throws SQLException {
         try {
-            Connection connection = DriverManager.getConnection(sqlUrl, user, password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             statement.executeUpdate("UPDATE tickets SET  status ='" + status + "' WHERE ticketNum ='" + ID + "'");
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -157,8 +142,7 @@ private String password;
     //as name suggests
     public void insertTicket(Ticket t){
         try {
-            Connection connection = DriverManager.getConnection(sqlUrl, user, password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             statement.executeUpdate("INSERT INTO tickets VALUES ("+t.getTicketNum()+",'"+t.getDescription()+"','"+t.getStatus()+"',"+t.getId()+")");
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -167,8 +151,7 @@ private String password;
     //new person using person class
     public void newPerson(Person p){
         try {
-            Connection connection = DriverManager.getConnection(sqlUrl, user, password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             // checks for existing person before creating one
             if(findPerson(p.getName(),p.getPhone())>-1)
                 System.out.println("person in sql");
@@ -181,8 +164,7 @@ private String password;
     //new person when creating one at Person class constructor
     public void newPerson(int id,String name, String phone,String mail) {
         try {
-            Connection connection = DriverManager.getConnection(sqlUrl, user, password);
-            Statement statement = connection.createStatement();
+            Statement statement =  this.connection.createStatement();
             int Id = findPerson(name, phone);
             if ( Id> -1)
                 System.out.println("exists");

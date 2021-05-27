@@ -27,7 +27,17 @@ public class menuBar extends JMenuBar{
         //logout btn goes back to main window
         logoutItem.addActionListener(e -> {
             SwingUtilities.getWindowAncestor(menuBar).dispose();
-            new MainWindow();
+            try {
+                new MainWindow();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
         });
         //inactive
         updateAll = new JMenuItem("Save all");
