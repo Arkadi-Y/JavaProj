@@ -74,7 +74,6 @@ public class LoginWindow implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("click");
         String userName = userNameText.getText();
         char[] passwordArray = passwordText.getPassword();
         String password = new String(passwordArray);
