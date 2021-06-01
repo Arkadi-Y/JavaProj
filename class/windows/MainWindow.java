@@ -11,6 +11,7 @@ public class MainWindow {
     private JPanel panel;
     private JButton login;
     private JButton newTicket;
+    private JButton uploadCV;
     private menuBar menuBar;
 
     public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
@@ -45,11 +46,20 @@ public class MainWindow {
                 ex.printStackTrace();
             }
         });
+        uploadCV = new JButton("upload CV");
+        uploadCV.addActionListener(e -> {
+            try {
+                new getFileWindow();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         frame.setBounds(400,200,500,400);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        panel.setLayout(new GridLayout(2,1,10,5));
+        panel.setLayout(new GridLayout(3,1,10,5));
         frame.setJMenuBar(menuBar.getMenu());
         panel.add(newTicket);
+        panel.add(uploadCV);
         panel.add(login);
         frame.add(panel);
         frame.setLocationRelativeTo(null);
