@@ -13,7 +13,7 @@ public class getPropertyValues implements getPropertyValuesInt {
     public String[] getPropValues() throws IOException {
         try {
             Properties prop = new Properties();
-            String propFileName = "data2.properties";
+            String propFileName = "data.properties";
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 
             if (inputStream != null) {
