@@ -1,5 +1,6 @@
 package windows;
 
+import Server.myDATA;
 import Server.myJDBC;
 import ongoing.List;
 import ongoing.Person;
@@ -32,13 +33,12 @@ public class TicketWindow {
     private JLabel UserMailLbl=new JLabel("Mail ");
     private JButton SubmitBtn = new JButton("Submit");
     private JButton UpdateBtn = new JButton("Update");
-
     private myJDBC jdbc = new myJDBC();
-    private List<Person> personList = jdbc.loadPeopleToList();
-    private List<Ticket> ticketList = jdbc.loadTicketsToList(personList);
+    private myDATA data;
 
 // constructor for new ticket
-    public TicketWindow(int logedIn) throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
+    public TicketWindow(int logedIn, myDATA data) throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
+        this.data=data;
         frame = new JFrame();
         initTextFields();
         setUP();
@@ -47,16 +47,20 @@ public class TicketWindow {
         SubmitBtn.addActionListener(e -> {
            addTicket();
         });
-        if (this.ticketList.size>=30) {
+        if (this.data.ticketList.size>=30) {
             SubmitBtn.setEnabled(false);
             JOptionPane.showMessageDialog(null, "There are too many active tickets, please wait", "alert", JOptionPane.ERROR_MESSAGE);
             frame.dispose();
-            new MainWindow();
+            if (logedIn>0)
+                new EmployeeWindow(data);
+            else
+                new MainWindow(data);
         }
         this.logedIn = logedIn;
     }
     //constructor for existing ticket
-    public TicketWindow(Ticket ticket) throws IOException, SQLException {
+    public TicketWindow(Ticket ticket,myDATA data) throws IOException, SQLException {
+        this.data=data;
         frame = new JFrame();
         initTicket(ticket);
         setUP();
@@ -79,10 +83,10 @@ public class TicketWindow {
             try {
                 //if logged in enter employee window
                 if (logedIn==1)
-                    new EmployeeWindow();
+                    new EmployeeWindow(data);
                 //else -> main window
                 else
-                    new MainWindow();
+                    new MainWindow(data);
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (SQLException ex) {
@@ -164,10 +168,11 @@ public class TicketWindow {
             try {
                 jdbc.newPerson(p);
                 jdbc.insertTicket(t);
+                data.refreshDATA();
                 if (logedIn > 0)
-                    new EmployeeWindow();
+                    new EmployeeWindow(data);
                 else
-                    new MainWindow();
+                    new MainWindow(data);
                 frame.dispose();
             } catch (IOException ex) {
                 new ErrorWindow(ex);
@@ -186,7 +191,8 @@ public class TicketWindow {
             }
             jdbc.updateTicketStatus(StatusText.getSelectedItem().toString(),ticket.getTicketNum());
             frame.dispose();
-            new EmployeeWindow();
+            data.refreshDATA();
+            new EmployeeWindow(data);
         } catch (IOException ex) {
             new ErrorWindow(ex);
         } catch (SQLException ex) {

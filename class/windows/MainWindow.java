@@ -1,5 +1,6 @@
 package windows;
 
+import Server.myDATA;
 import Server.myJDBC;
 
 import javax.imageio.ImageIO;
@@ -19,20 +20,15 @@ public class MainWindow {
     private JButton newTicket;
     private JButton uploadCV;
     private menuBar menuBar;
+    private myDATA data;
 
-    public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
+    public MainWindow(myDATA data) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
         //look for connection errors at startup
-        try {
-            myJDBC sql = new myJDBC();
-        } catch (IOException e) {
-            new ErrorWindow(e);
-        } catch (SQLException e) {
-            new ErrorWindow(e);
-        }
+        this.data=data;
         frame = new JFrame();
         frame.setLayout(new BorderLayout());
         ButtonPanal = new JPanel();
-        menuBar = new menuBar(0);
+        menuBar = new menuBar(0,data);
         login = new JButton("login");
         login.addActionListener(e -> loginAction());
         newTicket = new JButton("Enter help request");
@@ -79,11 +75,11 @@ public class MainWindow {
     }
     public void loginAction(){
         frame.dispose();
-        new LoginWindow();
+        new LoginWindow(data);
     }
     public void newTicketAction() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
         frame.dispose();
-        new TicketWindow(0);
+        new TicketWindow(0,data);
     }
     public void setLablePanal() throws IOException, URISyntaxException {
         lablePanal = new JPanel();

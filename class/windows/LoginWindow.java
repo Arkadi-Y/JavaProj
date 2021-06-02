@@ -1,5 +1,6 @@
 package windows;
 
+import Server.myDATA;
 import Server.myJDBC;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,8 +16,10 @@ public class LoginWindow implements ActionListener {
     private JTextField userNameText;
     private JPasswordField passwordText;
     private JButton loginBTN;
+    private myDATA data;
 
-    public LoginWindow() {
+    public LoginWindow(myDATA data) {
+        this.data=data;
         setUP();
     }
 
@@ -65,7 +68,7 @@ public class LoginWindow implements ActionListener {
           myJDBC db = new myJDBC();
           if (db.validateLogin(user, password)) {
               frame.dispose();
-              new EmployeeWindow();
+              new EmployeeWindow(data);
           } else System.out.println("Bad");
 
     }

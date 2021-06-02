@@ -2,9 +2,9 @@ package windows;
 
 
 
+import Server.myDATA;
+
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -13,9 +13,11 @@ public class menuBar extends JMenuBar{
     private JMenu menu, submenu;
     private JMenuItem loginItem,logoutItem,quit,updateAll;
     private int loged;
+    private myDATA data;
 
     //gets log value (1/0).
-    public menuBar(int loged){
+    public menuBar(int loged, myDATA data){
+        this.data=data;
         this.loged=loged;
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
@@ -23,14 +25,14 @@ public class menuBar extends JMenuBar{
         //log in btn opens login window
         loginItem.addActionListener(e->{
             SwingUtilities.getWindowAncestor(menuBar).dispose();
-            new LoginWindow();
+            new LoginWindow(data);
         });
         logoutItem = new JMenuItem("Logout");
         //logout btn goes back to main window
         logoutItem.addActionListener(e -> {
             SwingUtilities.getWindowAncestor(menuBar).dispose();
             try {
-                new MainWindow();
+                new MainWindow(data);
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
             } catch (UnsupportedLookAndFeelException ex) {

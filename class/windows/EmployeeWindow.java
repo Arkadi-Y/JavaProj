@@ -1,7 +1,6 @@
 package windows;
+import Server.myDATA;
 import Server.myJDBC;
-import ongoing.List;
-import ongoing.Person;
 import ongoing.Ticket;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -23,21 +22,19 @@ public class EmployeeWindow {
     private Object[] row = new Object[4];
     private JButton newBtn = new JButton(" New ");
     DefaultTableModel model = new DefaultTableModel();
-
     //load lists
-    private List<Person> personList = jdbc.loadPeopleToList();
-    private List<Ticket> ticketList = jdbc.loadTicketsToList(personList);
-    private List<Ticket> completedtickets = jdbc.loadCompletedTicketsToList(personList);
+    private myDATA data;
     private menuBar menuBar;
 
-    public EmployeeWindow() throws IOException, SQLException {
+    public EmployeeWindow(myDATA data) throws IOException, SQLException {
+        this.data=data;
         frame = new JFrame();
         panel = new JPanel();
         setUP();
     }
     //main setup for frame
     public void setUP() {
-        menuBar = new menuBar(1);
+        menuBar = new menuBar(1, data);
         frame.setBounds(400, 200, 700, 600);
         frame.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(700,300));
@@ -95,16 +92,16 @@ public class EmployeeWindow {
     }
     //load data to table
     public void loadTable() {
-        for (int i = 0; i < ticketList.size; i++) {
-            Ticket T = ticketList.getInstance(i);
+        for (int i = 0; i < data.ticketList.size; i++) {
+            Ticket T = data.ticketList.getInstance(i);
             row[0] = T.getDescription();
             row[1] = T.getStatus();
             row[2] = T.getTicketNum();
             row[3] = T.getName();
             model.addRow(row);
         }
-        for (int i = 0; i < completedtickets.size; i++) {
-            Ticket T = completedtickets.getInstance(i);
+        for (int i = 0; i < data.completedtickets.size; i++) {
+            Ticket T = data.completedtickets.getInstance(i);
             row[0] = T.getDescription();
             row[1] = T.getStatus();
             row[2] = T.getTicketNum();
@@ -132,7 +129,7 @@ public class EmployeeWindow {
                     frame.dispose();
                     //close frame and open ticket window with ticket
                         try {
-                            new TicketWindow(ticketList.findByID(ticketNum));
+                            new TicketWindow(data.ticketList.findByID(ticketNum),data);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         } catch (SQLException ex) {
@@ -145,12 +142,8 @@ public class EmployeeWindow {
     }
     //create new ticket
     public void newTicket() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
-        if (ticketList.size>=30)
-            System.out.println("to many");
-        else {
         frame.dispose();
-        new TicketWindow(1);
-    }
+        new TicketWindow(1,data);
     }
 
 }

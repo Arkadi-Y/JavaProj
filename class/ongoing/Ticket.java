@@ -1,51 +1,47 @@
 package ongoing;
-
-import Interfaces.*;
-
-public class Ticket extends Person implements TicketInt {
-    private static int count = 0;
-    private String status, Description;
+public class Ticket extends Person{
+    private static int count=0;
+    private String status,Description;
     private int ticketNum;
-
-    public Ticket(int ticketNum, String status, String Description, Person person) {
-        super(person.getName(), person.getPhone(), person.getMail());
-        this.ticketNum = ticketNum;
+    // main constructor for tickets from database
+    public Ticket(int ticketNum,String status,String Description,Person person){
+        super(person.getName(),person.getPhone(),person.getMail());
+        this.ticketNum=ticketNum;
         this.status = status;
         this.Description = Description;
-        count = ticketNum + 1;
+        if (ticketNum>=count)
+            count=ticketNum+1;
     }
-
-    public Ticket(String status, String Description, Person person) {
-        super(person.getName(), person.getPhone(), person.getMail());
-        this.ticketNum = count;
+    // main constructor for new tickets
+    public Ticket(String status,String Description,Person person){
+        super(person.getName(),person.getPhone(),person.getMail());
+        this.ticketNum=count;
         this.status = status;
         this.Description = Description;
         count++;
     }
-
-    public int getTicketNum() {
-        return this.ticketNum;
-    }
-
-    public String getStatus() {
+    public int getTicketNum(){return this.ticketNum;}
+    public String getStatus(){
         return this.status;
     }
-
-    public String getDescription() {
+    public String getDescription(){
         return this.Description;
     }
-
-    public void setStatus(String status) {
+    public void setStatus(String status){
         this.status = status;
     }
-
-    public void setDescription(String description) {
+    public void setDescription(String description){
         this.Description = description;
     }
-
+    public static void setCountTo0(){
+        count = 0;
+    }
     @Override
     public String toString() {
-        return "Ticket{" + "status='" + status + '\'' + ", Description='" + Description + '\'' + ", ticketNum="
-                + ticketNum + '}' + " user name :" + getName();
+        return "Ticket{" +
+                "status='" + status + '\'' +
+                ", Description='" + Description + '\'' +
+                ", ticketNum=" + ticketNum +
+                '}'+" user name :"+getName();
     }
 }
