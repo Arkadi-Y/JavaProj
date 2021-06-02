@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 //main window for employees to see ,create or update tickets
@@ -26,6 +27,7 @@ public class EmployeeWindow {
     //load lists
     private List<Person> personList = jdbc.loadPeopleToList();
     private List<Ticket> ticketList = jdbc.loadTicketsToList(personList);
+    private List<Ticket> completedtickets = jdbc.loadCompletedTicketsToList(personList);
     private menuBar menuBar;
 
     public EmployeeWindow() throws IOException, SQLException {
@@ -57,6 +59,8 @@ public class EmployeeWindow {
             } catch (UnsupportedLookAndFeelException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (URISyntaxException ex) {
                 ex.printStackTrace();
             }
         });
@@ -99,6 +103,14 @@ public class EmployeeWindow {
             row[3] = T.getName();
             model.addRow(row);
         }
+        for (int i = 0; i < completedtickets.size; i++) {
+            Ticket T = completedtickets.getInstance(i);
+            row[0] = T.getDescription();
+            row[1] = T.getStatus();
+            row[2] = T.getTicketNum();
+            row[3] = T.getName();
+            model.addRow(row);
+        }
     }
 
     public void addActionToTable() {
@@ -111,7 +123,7 @@ public class EmployeeWindow {
                     int row = target.getSelectedRow();
                     int ticketNum = (int) table.getValueAt(row,2);
                     String status = (String) table.getValueAt(row,1);
-                    if (status.equals("complete")){
+                    if (status.equals("Complete")){
                         JOptionPane.showMessageDialog(frame,
                                 "This ticket has been complete,\nUnable to edit, please create a new ticket.",
                                 "Warning",
@@ -132,7 +144,7 @@ public class EmployeeWindow {
         });
     }
     //create new ticket
-    public void newTicket() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public void newTicket() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
         if (ticketList.size>=30)
             System.out.println("to many");
         else {
@@ -140,4 +152,5 @@ public class EmployeeWindow {
         new TicketWindow(1);
     }
     }
+
 }

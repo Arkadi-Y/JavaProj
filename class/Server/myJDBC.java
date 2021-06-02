@@ -108,6 +108,36 @@ private Connection connection;
         }
         return null;
     }
+    public List<Ticket> loadCompletedTicketsToList(List<Person>personList){
+        List<Ticket>list=new List<>();
+        try{
+            Statement statement = connection.createStatement();
+            //get all tickets
+            ResultSet resultSet = statement.executeQuery("select * from completedtickets");
+            while (resultSet.next()){
+                //get values
+                int ticketNum = resultSet.getInt("ticketNum");
+                String description = resultSet.getString("description");
+                String status = resultSet.getString("status");
+                int personId = resultSet.getInt("idPerson");
+                //find person who is connected to ticket
+                Person person = personList.findByID(personId);
+                if (person!=null){
+                    Ticket ticket = new Ticket(ticketNum,status,description,person);
+                    list.add(ticket);
+                }
+                else {
+                    // no possible existence of personless ticket so no error handler.
+                    System.out.println("no person");
+                }
+            }
+            return list;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
     public List<Person> loadPeopleToList(){
         List<Person> people = new List<>();
         try{
@@ -134,7 +164,10 @@ private Connection connection;
     public void updateTicketStatus(String status, int ID) throws SQLException {
         try {
             Statement statement =  this.connection.createStatement();
-            statement.executeUpdate("UPDATE tickets SET  status ='" + status + "' WHERE ticketNum ='" + ID + "'");
+            if (status.equals("Complete"))
+                statement.executeUpdate("DELETE FROM tickets WHERE ticketNum ='" + ID + "'");
+            else
+                statement.executeUpdate("UPDATE tickets SET  status ='" + status + "' WHERE ticketNum ='" + ID + "'");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -144,6 +177,14 @@ private Connection connection;
         try {
             Statement statement =  this.connection.createStatement();
             statement.executeUpdate("INSERT INTO tickets VALUES ("+t.getTicketNum()+",'"+t.getDescription()+"','"+t.getStatus()+"',"+t.getId()+")");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void insertCompletedTicket(Ticket t){
+        try {
+            Statement statement =  this.connection.createStatement();
+            statement.executeUpdate("INSERT INTO completedtickets VALUES ("+t.getTicketNum()+",'"+t.getDescription()+"','"+t.getStatus()+"',"+t.getId()+")");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

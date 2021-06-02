@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 //ticket window will show ticket content or lets you create a new one
@@ -37,7 +38,7 @@ public class TicketWindow {
     private List<Ticket> ticketList = jdbc.loadTicketsToList(personList);
 
 // constructor for new ticket
-    public TicketWindow(int logedIn) throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public TicketWindow(int logedIn) throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
         frame = new JFrame();
         initTextFields();
         setUP();
@@ -93,6 +94,8 @@ public class TicketWindow {
             } catch (UnsupportedLookAndFeelException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (URISyntaxException ex) {
                 ex.printStackTrace();
             }
         }});
@@ -170,12 +173,17 @@ public class TicketWindow {
                 new ErrorWindow(ex);
             } catch (SQLException | ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException ex) {
                 ex.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
         }
-
     }
     public void updateTicket(Ticket ticket){
         try {
+            if (StatusText.getSelectedItem().toString().equals("Complete")) {
+                ticket.setStatus("Complete");
+                jdbc.insertCompletedTicket(ticket);
+            }
             jdbc.updateTicketStatus(StatusText.getSelectedItem().toString(),ticket.getTicketNum());
             frame.dispose();
             new EmployeeWindow();
@@ -184,7 +192,6 @@ public class TicketWindow {
         } catch (SQLException ex) {
             new ErrorWindow(ex);
         }
-
     }
     public boolean validateInput( String description,String status,String name,String phone,String mail ) {
         boolean flag = true;

@@ -5,6 +5,8 @@ package windows;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class menuBar extends JMenuBar{
     private JMenuBar menuBar;
@@ -36,6 +38,10 @@ public class menuBar extends JMenuBar{
             } catch (InstantiationException ex) {
                 ex.printStackTrace();
             } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (URISyntaxException ex) {
                 ex.printStackTrace();
             }
         });

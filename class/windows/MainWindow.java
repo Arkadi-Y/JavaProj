@@ -1,20 +1,26 @@
 package windows;
 
 import Server.myJDBC;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class MainWindow {
     private JFrame frame;
-    private JPanel panel;
+    private JPanel ButtonPanal;
+    private JPanel lablePanal;
     private JButton login;
     private JButton newTicket;
     private JButton uploadCV;
     private menuBar menuBar;
 
-    public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
         //look for connection errors at startup
         try {
             myJDBC sql = new myJDBC();
@@ -24,7 +30,8 @@ public class MainWindow {
             new ErrorWindow(e);
         }
         frame = new JFrame();
-        panel = new JPanel();
+        frame.setLayout(new BorderLayout());
+        ButtonPanal = new JPanel();
         menuBar = new menuBar(0);
         login = new JButton("login");
         login.addActionListener(e -> loginAction());
@@ -44,6 +51,8 @@ public class MainWindow {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
+            } catch (URISyntaxException ex) {
+                ex.printStackTrace();
             }
         });
         uploadCV = new JButton("upload CV");
@@ -54,14 +63,16 @@ public class MainWindow {
                 ex.printStackTrace();
             }
         });
-        frame.setBounds(400,200,500,400);
+        setLablePanal();
+        frame.setBounds(400,200,800,390);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        panel.setLayout(new GridLayout(3,1,10,5));
+        ButtonPanal.setLayout(new GridLayout(3,1,10,5));
         frame.setJMenuBar(menuBar.getMenu());
-        panel.add(newTicket);
-        panel.add(uploadCV);
-        panel.add(login);
-        frame.add(panel);
+        ButtonPanal.add(newTicket);
+        ButtonPanal.add(uploadCV);
+        ButtonPanal.add(login);
+        frame.add(lablePanal,BorderLayout.EAST);
+        frame.add(ButtonPanal,BorderLayout.WEST);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
@@ -70,9 +81,17 @@ public class MainWindow {
         frame.dispose();
         new LoginWindow();
     }
-    public void newTicketAction() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public void newTicketAction() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
         frame.dispose();
         new TicketWindow(0);
+    }
+    public void setLablePanal() throws IOException, URISyntaxException {
+        lablePanal = new JPanel();
+        lablePanal.setBounds(400,200,200,400);
+        BufferedImage myPicture = ImageIO.read(new File(this.getClass().getResource("../matnasim320X640.jpg").toURI()));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        picLabel.setBounds(400,200,200,400);
+        lablePanal.add(picLabel);
     }
 
 }
