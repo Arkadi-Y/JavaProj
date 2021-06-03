@@ -1,23 +1,16 @@
 package FileClasses;
 
+import windows.ErrorWindow;
+
 import java.io.*;
-import java.util.Calendar;
 import java.util.Scanner;
 
 public class fileReader {
-    public static void saveToFile(String text,String path,String name) throws IOException {
-        String savePath;
-        Calendar time = Calendar.getInstance();
-        if (!path.contains(".txt")){
-            savePath=System.getProperty("user.home") + "/Desktop/SV-"+name+".txt";
-        }
-        else {
-            savePath=path;
-        }
+    public static void saveToFile(String text,String name) throws IOException {
+        String savePath=System.getProperty("user.home") + "/Desktop/SV-"+name+".txt";
         try
         {
             File file = new File(savePath);
-
             PrintWriter writer= new PrintWriter(file);
             Scanner scanner = new Scanner(text);
             String currentLine = "";
@@ -29,9 +22,9 @@ public class fileReader {
             writer.close();
 
         } catch (FileNotFoundException e) {
-            System.out.println("file not found - trying to create one");
+            new ErrorWindow(e);
             if (createFile(savePath))
-                saveToFile(text,path,name);
+                saveToFile(text,name);
         }
     }
 
@@ -48,7 +41,7 @@ public class fileReader {
                 result+=currentLine+"\n";
                 fileScanner.close();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                    new ErrorWindow(e);
             }
             return result;
     }

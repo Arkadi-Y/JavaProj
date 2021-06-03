@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 //main window for employees to see ,create or update tickets
 public class EmployeeWindow {
-    private myJDBC jdbc = new myJDBC();
     private JFrame frame;
     private JPanel panel;
     private JTable table;
@@ -26,7 +25,7 @@ public class EmployeeWindow {
     private myDATA data;
     private menuBar menuBar;
 
-    public EmployeeWindow(myDATA data) throws IOException, SQLException {
+    public EmployeeWindow(myDATA data){
         this.data=data;
         frame = new JFrame();
         panel = new JPanel();
@@ -92,6 +91,7 @@ public class EmployeeWindow {
     }
     //load data to table
     public void loadTable() {
+        //first active tickets
         for (int i = 0; i < data.ticketList.size; i++) {
             Ticket T = data.ticketList.getInstance(i);
             row[0] = T.getDescription();
@@ -100,6 +100,7 @@ public class EmployeeWindow {
             row[3] = T.getName();
             model.addRow(row);
         }
+        //then completed ones
         for (int i = 0; i < data.completedtickets.size; i++) {
             Ticket T = data.completedtickets.getInstance(i);
             row[0] = T.getDescription();
@@ -128,13 +129,7 @@ public class EmployeeWindow {
                     else {
                     frame.dispose();
                     //close frame and open ticket window with ticket
-                        try {
                             new TicketWindow(data.ticketList.findByID(ticketNum),data);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        } catch (SQLException ex) {
-                            ex.printStackTrace();
-                        }
                     }
                 }
             }

@@ -27,7 +27,7 @@ public class LoginWindow implements ActionListener {
         frame = new JFrame();
         frame.setSize(350, 200);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         panel = new JPanel();
         panel.setLayout(null);
 
@@ -63,28 +63,20 @@ public class LoginWindow implements ActionListener {
         loginBTN.addActionListener(this::actionPerformed);
     }
 
-    public void validate(String user, String password) throws IOException, SQLException {
-
+    public void validate(String user, String password){
           myJDBC db = new myJDBC();
           if (db.validateLogin(user, password)) {
               frame.dispose();
               new EmployeeWindow(data);
-          } else System.out.println("Bad");
-
+          } else new ErrorWindow(false);
     }
-
+//button action
     @Override
     public void actionPerformed(ActionEvent e) {
         String userName = userNameText.getText();
         char[] passwordArray = passwordText.getPassword();
         String password = new String(passwordArray);
-        try {
-            validate(userName, password);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        validate(userName, password);
     }
 
 }

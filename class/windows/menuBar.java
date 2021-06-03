@@ -5,12 +5,15 @@ package windows;
 import Server.myDATA;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 
 public class menuBar extends JMenuBar{
     private JMenuBar menuBar;
-    private JMenu menu, submenu;
+    private JMenu menu;
     private JMenuItem loginItem,logoutItem,quit,updateAll;
     private int loged;
     private myDATA data;
@@ -22,42 +25,13 @@ public class menuBar extends JMenuBar{
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
         loginItem = new JMenuItem("Login");
-        //log in btn opens login window
-        loginItem.addActionListener(e->{
-            SwingUtilities.getWindowAncestor(menuBar).dispose();
-            new LoginWindow(data);
-        });
         logoutItem = new JMenuItem("Logout");
-        //logout btn goes back to main window
-        logoutItem.addActionListener(e -> {
-            SwingUtilities.getWindowAncestor(menuBar).dispose();
-            try {
-                new MainWindow(data);
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            } catch (UnsupportedLookAndFeelException ex) {
-                ex.printStackTrace();
-            } catch (InstantiationException ex) {
-                ex.printStackTrace();
-            } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (URISyntaxException ex) {
-                ex.printStackTrace();
-            }
-        });
+
         //inactive
         updateAll = new JMenuItem("Save all");
-//        updateAll.addActionListener((ActionListener) this);
         quit = new JMenuItem("Quit");
-        //close all
-        quit.addActionListener(e->{
-            int response = JOptionPane.showConfirmDialog(null, "Would You Like to exit?", "Warning",JOptionPane.YES_NO_OPTION);
-            if (response == JOptionPane.YES_OPTION) {
-                System.exit(0);
-            }
-        });
+        addActions();
+        //addShortCuts(menuBar);
         if (loged>0)
             loginItem.setEnabled(false);
         else
@@ -66,5 +40,58 @@ public class menuBar extends JMenuBar{
         menuBar.add(menu);
     }
     public JMenuBar getMenu(){return menuBar;}
+    public void addActions(){
+        loginItem.addActionListener(e->{
+            new LoginWindow(data);
+        });
+        logoutItem.addActionListener(e -> {
+            SwingUtilities.getWindowAncestor(menuBar).dispose();
+            new MainWindow(data);
+        });
+        quit.addActionListener(e->{
+            int response = JOptionPane.showConfirmDialog(null, "Would You Like to exit?", "Warning",JOptionPane.YES_NO_OPTION);
+            if (response == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+
+    }
+    /*
+    public void addShortCuts(JComponent component){
+        component.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
+        component.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE , 0), "exit");
+        component.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "login");
+        component.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "logout");
+        component.getActionMap().put("enter", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    SwingUtilities.getWindowAncestor(menuBar).dispose();
+                    new TicketWindow(0,data);
+            }
+        });
+        component.getActionMap().put("exit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null, "Would You Like to exit?", "Warning",JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+        component.getActionMap().put("login", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LoginWindow(data);
+            }
+        });
+        component.getActionMap().put("logout", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.getWindowAncestor(menuBar).dispose();
+                new MainWindow(data);
+            }
+        });
+    }*/
+
 
 }

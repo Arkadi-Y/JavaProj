@@ -2,7 +2,6 @@ package windows;
 
 import Server.myDATA;
 import Server.myJDBC;
-import ongoing.List;
 import ongoing.Person;
 import ongoing.Ticket;
 import javax.swing.*;
@@ -33,11 +32,10 @@ public class TicketWindow {
     private JLabel UserMailLbl=new JLabel("Mail ");
     private JButton SubmitBtn = new JButton("Submit");
     private JButton UpdateBtn = new JButton("Update");
-    private myJDBC jdbc = new myJDBC();
     private myDATA data;
 
 // constructor for new ticket
-    public TicketWindow(int logedIn, myDATA data) throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
+    public TicketWindow(int logedIn, myDATA data){
         this.data=data;
         frame = new JFrame();
         initTextFields();
@@ -59,7 +57,7 @@ public class TicketWindow {
         this.logedIn = logedIn;
     }
     //constructor for existing ticket
-    public TicketWindow(Ticket ticket,myDATA data) throws IOException, SQLException {
+    public TicketWindow(Ticket ticket,myDATA data){
         this.data=data;
         frame = new JFrame();
         initTicket(ticket);
@@ -80,28 +78,12 @@ public class TicketWindow {
         frame.addWindowListener(new WindowAdapter()
         {@Override
             public void windowClosing(WindowEvent e){
-            try {
-                //if logged in enter employee window
-                if (logedIn==1)
-                    new EmployeeWindow(data);
-                //else -> main window
-                else
-                    new MainWindow(data);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
-            } catch (InstantiationException ex) {
-                ex.printStackTrace();
-            } catch (UnsupportedLookAndFeelException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            } catch (URISyntaxException ex) {
-                ex.printStackTrace();
-            }
+            //if logged in enter employee window
+            if (logedIn==1)
+                new EmployeeWindow(data);
+            //else -> main window
+            else
+                new MainWindow(data);
         }});
         //makes frame go center
         frame.setLocationRelativeTo(null);
@@ -165,7 +147,7 @@ public class TicketWindow {
         if (validateInput(description,status,name,phone,mail)) {
             Person p = new Person(name, phone, mail);
             Ticket t = new Ticket(status, description, p);
-            try {
+                myJDBC jdbc = new myJDBC();
                 jdbc.newPerson(p);
                 jdbc.insertTicket(t);
                 data.refreshDATA();
@@ -174,16 +156,10 @@ public class TicketWindow {
                 else
                     new MainWindow(data);
                 frame.dispose();
-            } catch (IOException ex) {
-                new ErrorWindow(ex);
-            } catch (SQLException | ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException ex) {
-                ex.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
         }
     }
     public void updateTicket(Ticket ticket){
+        myJDBC jdbc = new myJDBC();
         try {
             if (StatusText.getSelectedItem().toString().equals("Complete")) {
                 ticket.setStatus("Complete");
@@ -193,8 +169,6 @@ public class TicketWindow {
             frame.dispose();
             data.refreshDATA();
             new EmployeeWindow(data);
-        } catch (IOException ex) {
-            new ErrorWindow(ex);
         } catch (SQLException ex) {
             new ErrorWindow(ex);
         }

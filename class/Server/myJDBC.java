@@ -3,21 +3,37 @@ package Server;
 import java.io.*;
 import java.sql.*;
 import ongoing.*;
+import windows.ErrorWindow;
+
 //main connection class to database
 public class myJDBC {
 private String sqlUrl;
 private String user;
 private String password;
 private Connection connection;
-// constructor calls getProperty class to set up connectrion.
-    public myJDBC() throws IOException, SQLException {
-        System.out.println("*");
+// constructor calls getProperty class to set up connection.
+    public myJDBC() {
+        try {
+            setProperties();
+        } catch (IOException e) {
+            new ErrorWindow(e);
+        }
+        try {
+            connect();
+        } catch (SQLException e) {
+            new ErrorWindow(e);;
+        }
+
+    }
+    public void connect() throws SQLException {
+        this.connection = DriverManager.getConnection(sqlUrl,user,password);
+    }
+    public void setProperties() throws IOException {
         getPropertyValues getClass = new getPropertyValues();
         String[]values = getClass.getPropValues();
         this.sqlUrl = values[0];
         this.user = values [1];
         this.password = values[2];
-        this.connection = DriverManager.getConnection(sqlUrl,user,password);
     }
 
     //un-used;
