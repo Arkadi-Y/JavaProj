@@ -19,7 +19,7 @@ public class getFileWindow {
         if (response == JFileChooser.APPROVE_OPTION){
             fileReader reader = new fileReader();
             String text = reader.loadFromFile(fileChooser.getSelectedFile().getAbsolutePath());
-            fileReader.saveToFile(text,"path","cv"+timeStamp);
+            fileReader.saveToFile(text,"cv"+timeStamp);
         }
     }
 
