@@ -1,6 +1,5 @@
-package ongoing;
+package Classes;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 public class List<T> {
    public int size = 0;
@@ -43,7 +42,8 @@ public class List<T> {
                 return item;
             if (item instanceof Ticket&&id==((Ticket)item).getTicketNum())
                 return item;
-
+            if (item instanceof Employee&&id==((Employee)item).getId())
+                return item;
         }
         return null;
     }

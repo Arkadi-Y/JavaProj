@@ -3,12 +3,8 @@ package windows;
 import Server.myDATA;
 import Server.myJDBC;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
 
-public class LoginWindow implements ActionListener {
+public class LoginWindow{
     private JFrame frame;
     private JPanel panel;
     private JLabel userNameLable;
@@ -54,13 +50,22 @@ public class LoginWindow implements ActionListener {
         frame.add(panel);
 
         addActions();
-
+        //makes frame go center
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
     }
 
     public void addActions() {
-        loginBTN.addActionListener(this::actionPerformed);
+        loginBTN.addActionListener(e -> loginAction());
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    frame.dispose();
+                    new MainWindow(data);
+            }
+        });
     }
 
     public void validate(String user, String password){
@@ -71,8 +76,7 @@ public class LoginWindow implements ActionListener {
           } else new ErrorWindow(false);
     }
 //button action
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void loginAction() {
         String userName = userNameText.getText();
         char[] passwordArray = passwordText.getPassword();
         String password = new String(passwordArray);

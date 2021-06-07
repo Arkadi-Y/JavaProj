@@ -10,8 +10,9 @@ import java.util.Date;
 
 public class getFileWindow {
     JFileChooser fileChooser;
-    public getFileWindow() throws IOException {
+    public getFileWindow(String name) throws IOException {
         fileChooser = new JFileChooser();
+        //look only for text files
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
         fileChooser.setFileFilter(filter);
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
@@ -19,7 +20,7 @@ public class getFileWindow {
         if (response == JFileChooser.APPROVE_OPTION){
             fileReader reader = new fileReader();
             String text = reader.loadFromFile(fileChooser.getSelectedFile().getAbsolutePath());
-            fileReader.saveToFile(text,"cv"+timeStamp);
+            fileReader.saveToFile(text," "+name+" cv "+timeStamp);
         }
     }
 

@@ -4,16 +4,10 @@ import Server.myDATA;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.SQLException;
-
-import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 
 public class MainWindow {
     private JFrame frame;
@@ -21,7 +15,7 @@ public class MainWindow {
     private JPanel lablePanal;
     private JButton login;
     private JButton newTicket;
-    private JButton uploadCV;
+    private JButton jobApp;
     private menuBar menuBar;
     private myDATA data;
 
@@ -30,6 +24,7 @@ public class MainWindow {
         frame = new JFrame();
         setUP();
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
     public void setUP(){
@@ -38,11 +33,8 @@ public class MainWindow {
         menuBar = new menuBar(0,data);
         login = new JButton("login");
         newTicket = new JButton("Enter help request");
-        uploadCV = new JButton("upload CV");
-
+        jobApp = new JButton("I WANT A JOB");
         addActionsToButtons();
-        //JButton button = (JButton) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-        System.out.println(login.getAction());
         try {
             setLablePanal();
         } catch (IOException e) {
@@ -55,7 +47,7 @@ public class MainWindow {
         ButtonPanal.setLayout(new GridLayout(3,1,10,5));
         frame.setJMenuBar(menuBar.getMenu());
         ButtonPanal.add(newTicket);
-        ButtonPanal.add(uploadCV);
+        ButtonPanal.add(jobApp);
         ButtonPanal.add(login);
         frame.add(lablePanal,BorderLayout.EAST);
         frame.add(ButtonPanal,BorderLayout.WEST);
@@ -63,16 +55,15 @@ public class MainWindow {
     public void addActionsToButtons(){
         login.addActionListener(e -> loginAction());
         newTicket.addActionListener(e -> newTicketAction());
-        uploadCV.addActionListener(e -> { try {
-                new getFileWindow();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+        jobApp.addActionListener(e -> {
+            frame.dispose();
+            new ApplyForJobWindow(data);
         });
 
 
     }
-    public void loginAction(){
+    public void loginAction() {
+        frame.dispose();
         new LoginWindow(data);
     }
     public void newTicketAction(){

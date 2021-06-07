@@ -1,4 +1,4 @@
-package ongoing;
+package Classes;
 public class Ticket extends Person{
     private static int count=0;
     private String status,Description;

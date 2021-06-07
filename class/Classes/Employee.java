@@ -1,21 +1,24 @@
-package ongoing;
+package Classes;
 
-import Interfaces.*;
-
-public class Employee extends Person implements EmployeeInt {
+public class Employee extends Person {
     private String address;
     private String role;
-
-    public Employee(String name, String phone, String mail, String address, String role) {
+    private int matnasID;
+    private int id;
+    public Employee(int id,String name, String phone, String mail, String address, String role,int matnasID) {
         super(name, phone, mail);
+        this.id=id;
         this.address = address;
         this.role = role;
+        this.matnasID=matnasID;
     }
 
-    public Employee(Person person, String address, String role) {
+    public Employee(int id,Person person, String address, String role,int matnasID) {
         super(person.getName(), person.getPhone(), person.getMail());
+        this.id=id;
         this.address = address;
         this.role = role;
+        this.matnasID=matnasID;
     }
 
     public String getAddress() {
@@ -36,5 +39,21 @@ public class Employee extends Person implements EmployeeInt {
 
     public String toString() {
         return super.toString() + " Employee{ address=" + this.address + " role=" + this.role + "}";
+    }
+    public int getMatnasID() {
+        return matnasID;
+    }
+
+    public void setMatnasID(int matnasID) {
+        this.matnasID = matnasID;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

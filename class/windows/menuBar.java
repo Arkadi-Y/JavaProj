@@ -5,11 +5,6 @@ package windows;
 import Server.myDATA;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 
 public class menuBar extends JMenuBar{
     private JMenuBar menuBar;

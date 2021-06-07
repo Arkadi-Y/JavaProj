@@ -1,15 +1,12 @@
 package windows;
 import Server.myDATA;
-import Server.myJDBC;
-import ongoing.Ticket;
+
+import Classes.Ticket;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 
 //main window for employees to see ,create or update tickets
 public class EmployeeWindow {
@@ -41,29 +38,13 @@ public class EmployeeWindow {
         setTable();
         frame.add(scrollPane,BorderLayout.CENTER);
         newBtn.setPreferredSize(new Dimension(50,20));
-        newBtn.addActionListener(e -> {
-            try {
-                newTicket();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
-            } catch (InstantiationException ex) {
-                ex.printStackTrace();
-            } catch (UnsupportedLookAndFeelException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            } catch (URISyntaxException ex) {
-                ex.printStackTrace();
-            }
+        newBtn.addActionListener(e -> { newTicket();
         });
         panel.add(newBtn,BorderLayout.SOUTH);
         frame.add(panel,BorderLayout.SOUTH);
         frame.setLocationRelativeTo(null);
         frame.setJMenuBar(menuBar.getMenu());
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -71,12 +52,9 @@ public class EmployeeWindow {
     public void setTable() {
         table = new JTable() {
             private static final long serialVersionUID = 1L;
-
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-
-            ;
         };
         // setting table
         model.setColumnIdentifiers(columns);
@@ -136,7 +114,7 @@ public class EmployeeWindow {
         });
     }
     //create new ticket
-    public void newTicket() throws IOException, SQLException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
+    public void newTicket(){
         frame.dispose();
         new TicketWindow(1,data);
     }

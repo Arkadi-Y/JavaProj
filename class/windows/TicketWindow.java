@@ -2,15 +2,13 @@ package windows;
 
 import Server.myDATA;
 import Server.myJDBC;
-import ongoing.Person;
-import ongoing.Ticket;
+import Classes.Person;
+import Classes.Ticket;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 //ticket window will show ticket content or lets you create a new one
@@ -42,9 +40,7 @@ public class TicketWindow {
         setUP();
         ticketNumText.setEditable(false);
         UpdateBtn.setEnabled(false);
-        SubmitBtn.addActionListener(e -> {
-           addTicket();
-        });
+        SubmitBtn.addActionListener(e->{addTicket();});
         if (this.data.ticketList.size>=30) {
             SubmitBtn.setEnabled(false);
             JOptionPane.showMessageDialog(null, "There are too many active tickets, please wait", "alert", JOptionPane.ERROR_MESSAGE);
@@ -55,6 +51,10 @@ public class TicketWindow {
                 new MainWindow(data);
         }
         this.logedIn = logedIn;
+        //makes frame go center
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
     //constructor for existing ticket
     public TicketWindow(Ticket ticket,myDATA data){
@@ -67,6 +67,10 @@ public class TicketWindow {
             updateTicket(ticket);
         });
         this.logedIn=1;
+        //makes frame go center
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
     //main setup for frame
     public void setUP(){
@@ -85,9 +89,7 @@ public class TicketWindow {
             else
                 new MainWindow(data);
         }});
-        //makes frame go center
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+
     }
     //add labels and text fields
     public void addFields(){

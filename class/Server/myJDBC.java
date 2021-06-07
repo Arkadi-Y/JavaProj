@@ -2,10 +2,12 @@ package Server;
 
 import java.io.*;
 import java.sql.*;
-import ongoing.*;
+import Classes.*;
 import windows.ErrorWindow;
 
+
 //main connection class to database
+//this class handles all writes and reads from sql server
 public class myJDBC {
 private String sqlUrl;
 private String user;
@@ -229,6 +231,41 @@ private Connection connection;
                 statement.executeUpdate("INSERT INTO person VALUES (" + id+ ",'" + name + "','" + phone + "','" + mail + "')");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    public void newEmployee(int id,String name, String phone, String mail, String address, String role,int matnasID) {
+        try {
+            Statement statement =  this.connection.createStatement();
+            statement.executeUpdate("INSERT INTO employee VALUES (" +id+ ",'" + name + "','" + phone + "','" + mail + "','"+address+"','"+role+"','"+matnasID+"')");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            new ErrorWindow(e);
+        }
+    }
+    public List<Employee> loadEmployeeList(){
+        List<Employee> employeeList = new List<>();
+        try{
+            Statement statement =  this.connection.createStatement();
+            //get all employees table
+            ResultSet resultSet = statement.executeQuery("select * from employee");
+            while (resultSet.next()){
+                //get values from table
+                int id = resultSet.getInt("idemployee");
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("phone");
+                String mail = resultSet.getString("mail");
+                String address = resultSet.getString("address");
+                String role = resultSet.getString("role");
+                int matnasID = resultSet.getInt("idmatnas");
+                //create employee and add to list
+                //String name, String phone, String mail, String address, String role,int matnasID)
+                Employee employee = new Employee(id,name,phone,mail, address,role,matnasID);
+                employeeList.add(employee);
+            }
+            return employeeList;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 

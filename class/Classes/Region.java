@@ -1,8 +1,6 @@
-package ongoing;
+package Classes;
 
-import Interfaces.*;
-
-public class Region implements RegionInt {
+public class Region {
     private Employee Diractor, Vice, Secretery;
 
     public Region(Employee Diractor, Employee Vice, Employee Secretery) {
@@ -33,9 +31,5 @@ public class Region implements RegionInt {
 
     public void setDiractor(Employee diractor) {
         this.Diractor = diractor;
-    }
-
-    public String toString() {
-        return "Employee {" + this.Diractor.toString() + "" + this.Secretery.toString() + this.Vice.toString() + "}";
     }
 }
