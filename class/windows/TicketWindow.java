@@ -41,6 +41,12 @@ public class TicketWindow {
         ticketNumText.setEditable(false);
         UpdateBtn.setEnabled(false);
         SubmitBtn.addActionListener(e->{addTicket();});
+
+        this.logedIn = logedIn;
+        //makes frame go center
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
         if (this.data.ticketList.size>=30) {
             SubmitBtn.setEnabled(false);
             JOptionPane.showMessageDialog(null, "There are too many active tickets, please wait", "alert", JOptionPane.ERROR_MESSAGE);
@@ -50,11 +56,6 @@ public class TicketWindow {
             else
                 new MainWindow(data);
         }
-        this.logedIn = logedIn;
-        //makes frame go center
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
     //constructor for existing ticket
     public TicketWindow(Ticket ticket,myDATA data){
